@@ -1,4 +1,4 @@
-PROJECT_NAME := app
+PROJECT_NAME := jakub-app
 LD_FLAGS ?=
 
 dep: # get the dependencies

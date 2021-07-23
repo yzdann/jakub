@@ -26,9 +26,10 @@ jobs:
     - name: Build container image
       uses: docker/build-push-action@v1
       with:
+        file: app/Dockerfile
         username: ${{ github.actor }}
         password: ${{ secrets.GHCR_TOKEN }}
         registry: docker.pkg.github.com
-        repository: ${{ github.repository }}/peeleh
+        repository: ${{ github.repository }}/jakub-app
         tag_with_sha: true
         tag_with_ref: true

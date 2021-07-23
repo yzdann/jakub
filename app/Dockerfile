@@ -12,8 +12,8 @@ RUN make build
 
 FROM alpine:3.12
 
-COPY --from=builder /build/bin/app . 
+COPY --from=builder /build/bin/jakub-app . 
 
 EXPOSE 8080
 
-ENTRYPOINT [ "./app"  ]
+ENTRYPOINT [ "./jakub-app"  ]

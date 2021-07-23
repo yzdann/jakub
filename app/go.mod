@@ -1,4 +1,4 @@
-module app
+module jakub-app
 
 go 1.16
 
