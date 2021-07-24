@@ -1,0 +1,1 @@
+terrafrom apply --auto-approve
