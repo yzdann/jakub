@@ -39,6 +39,6 @@ jobs:
       with:
         context: "app"
         push: true
-        tags:
+        tags: |
           ghcr.io/${{ github.repository_owner }}/app:latest
           ghcr.io/${{ github.repository_owner }}/app:${{ steps.extract_branch.outputs.release_version }}
