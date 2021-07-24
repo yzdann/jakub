@@ -62,3 +62,6 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/go,helm,terraform
+
+# Add by myself
+*/bin/*
