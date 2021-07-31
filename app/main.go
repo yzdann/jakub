@@ -86,6 +86,11 @@ func InternalServerErrorHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("500 - Something bad happened!"))
 }
 
+func ForbiddenErrorHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusForbidden)
+	w.Write([]byte("403 - Forbidden!"))
+}
+
 func init() {
 	prometheus.Register(totalRequests)
 	prometheus.Register(responseStatus)
@@ -99,6 +104,7 @@ func main() {
 	r.HandleFunc("/", HomeHandler)
 	r.HandleFunc("/slow", RandomSlowHandler)
 	r.HandleFunc("/internal", InternalServerErrorHandler)
+	r.HandleFunc("/forbidden", InternalServerErrorHandler)
 
 	log.Printf("Serving requests on port 8080")
 	srv := &http.Server{
