@@ -81,6 +81,11 @@ func RandomSlowHandler(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(time.Second * time.Duration(randomTime))
 }
 
+func InternalServerErrorHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte("500 - Something bad happened!"))
+}
+
 func init() {
 	prometheus.Register(totalRequests)
 	prometheus.Register(responseStatus)
@@ -93,6 +98,7 @@ func main() {
 	r.Path("/metrics").Handler(promhttp.Handler())
 	r.HandleFunc("/", HomeHandler)
 	r.HandleFunc("/slow", RandomSlowHandler)
+	r.HandleFunc("/internal", InternalServerErrorHandler)
 
 	log.Printf("Serving requests on port 8080")
 	srv := &http.Server{
