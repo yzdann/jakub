@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
 	"time"
@@ -72,6 +73,14 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Home")
 }
 
+func RandomSlowHandler(w http.ResponseWriter, r *http.Request) {
+	min := 2
+	max := 5
+	rand.Seed(time.Now().UnixNano())
+	randomTime := rand.Intn(max-min) + min
+	time.Sleep(time.Second * time.Duration(randomTime))
+}
+
 func init() {
 	prometheus.Register(totalRequests)
 	prometheus.Register(responseStatus)
@@ -83,6 +92,7 @@ func main() {
 	r.Use(prometheusMiddleware)
 	r.Path("/metrics").Handler(promhttp.Handler())
 	r.HandleFunc("/", HomeHandler)
+	r.HandleFunc("/slow", RandomSlowHandler)
 
 	log.Printf("Serving requests on port 8080")
 	srv := &http.Server{
