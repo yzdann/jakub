@@ -1,0 +1,46 @@
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: request-availability
+  namespace: monitoring
+spec:
+  service: "app"
+  labels:
+    owner: "yzdann"
+    repo: "yzdann/jakub"
+    tier: "2"
+  slos:
+    - name: "requests-availability"
+      objective: 99.9
+      description: "Common SLO based on availability for HTTP request responses."
+      sli:
+        events:
+          errorQuery: sum(rate(response_status{status=~"(5..|429)"}[{{.window}}]))
+          totalQuery: sum(rate(response_status[{{.window}}]))
+      alerting:
+        name: MyServiceHighErrorRate
+        labels:
+          category: "availability"
+        annotations:
+          summary: "High error rate on 'app' requests responses"
+        pageAlert:
+          disable: true
+        ticketAlert:
+          disable: true
+    - name: "90th-requests-latency"
+      objective: 99.9
+      description: "Common SLO based on latency for 90th percentile of HTTP request responses."
+      sli:
+        events:
+          errorQuery: histogram_quantile(0.90, sum(increase(http_response_time_seconds_bucket[{{.window}}])) by (le)) > 1
+          totalQuery: histogram_quantile(0.90, sum(increase(http_response_time_seconds_bucket[{{.window}}])) by (le))
+      alerting:
+        name: MyServiceHigh90thLatencyRate
+        labels:
+          category: "latency"
+        annotations:
+          summary: "High 90th latency rate on 'app' requests responses"
+        pageAlert:
+          disable: true
+        ticketAlert:
+          disable: true
